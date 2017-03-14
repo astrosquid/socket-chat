@@ -1,0 +1,51 @@
+{
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
+  "extends": ["eslint:recommended"],
+  "rules": {
+    "no-console": "off",
+    "indent": [
+      "error",
+      4
+    ],
+    "prefer-const": ["error", {
+      "destructuring": "any",
+      "ignoreReadBeforeAssign": false
+    }],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "no-var": [
+      "error"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "key-spacing": 0,
+    "max-len": [
+      2,
+      {
+        "code": 180,
+        "tabWidth": 2,
+        "ignoreUrls": true
+      }
+    ],
+    "require-jsdoc": 0,
+    "brace-style": [
+      "error",
+      "allman"
+    ]
+  }
+}

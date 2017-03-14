@@ -1,39 +1,51 @@
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
 
-var acceptedusers = {
-	"chris": "donut",
-	"steve": "nadgerz"
-}
+const networkingConsts = require('consts').consts;
+const PORT = networkingConsts.PORT;
 
-var acceptedUsers = ['chris', 'steve'];
+const app = require('express')();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 
-app.get('/chat', function(req, res) {
- res.sendFile(__dirname + '/index.html');
+/*
+const acceptedusers = {
+    'chris': 'donut',
+    'steve': 'nadgerz'
+};
+
+const acceptedUsers = ['chris', 'steve'];
+*/
+
+app.get('/chat', function (req, res)
+{
+    res.sendFile(__dirname + '/index.html');
 });
 
-io.on('connection', function(socket) {
-	var messagePack = {};
 
-	var now = new Date()
-  var timestamp = now.getHours() + ':' + now.getMinutes();
+io.on('connection', function (socket)
+{
+    const messagePack = {};
 
-	messagePack.time = timestamp;
-	messagePack.author = 'SYSTEM';
-	messagePack.message = 'A visitor approaches...';
+    const now = new Date();
+    const timestamp = now.getHours() + ':' + now.getMinutes();
 
-	console.log('someone connected...');
-	io.emit('chat message', messagePack);
+    messagePack.time = timestamp;
+    messagePack.author = 'SYSTEM';
+    messagePack.message = 'A visitor approaches...';
 
-	// endpoint
-	socket.on('chat message', function(msg){
-		io.emit('chat message', msg);
-	});
-}).on('disconnect', function(socket) {
-	console.log('user left.');
+    console.log('someone connected...');
+    io.emit('chat message', messagePack);
+
+    // endpoint
+    socket.on('chat message', function (msg)
+    {
+        io.emit('chat message', msg);
+    });
+}).on('disconnect', function (socket)
+{
+    console.log('user left.');
 });
 
-http.listen(3000, function(){
- console.log('listening on *:3000');
+http.listen(PORT, function ()
+{
+    console.log('listening on *:' + PORT);
 });
