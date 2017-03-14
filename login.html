@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Socket.IO Login</title>
+</head>
+
+<script type="text/javascript">
+	$(function() {
+		$('form').submit(function(){
+	    const gotoChat = 'http://localhost/chat?username='
+	    const username = $('#username').val();
+	    window.location = gotoChat+username;
+	    return false;
+		});
+	});
+
+</script>
+
+<body>
+	<form action="">
+		<h1>Login to socket-chat</h1>
+		<label for="username">Username:</label><input type="text" id="username" />
+		<button type="submit">Submit</button>
+	</form>
+</body>
+
+</html>
