@@ -5,14 +5,22 @@
 	<title>Socket.IO Login</title>
 </head>
 
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 <script type="text/javascript">
 	$(function() {
 		$('form').submit(function(){
-	    const gotoChat = 'http://localhost/chat?username='
+	    const gotoChat = 'chat?username='
 	    const username = $('#username').val();
-	    window.location = gotoChat+username;
+	    userLogin(username);
 	    return false;
 		});
+
+		function userLogin() 
+		{
+			const chatPage = 'chat';
+			const username = $('#username').val();
+			//const password = $('#password').val();
+		}
 	});
 
 </script>
