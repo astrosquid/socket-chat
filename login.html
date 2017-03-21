@@ -9,17 +9,38 @@
 <script type="text/javascript">
 	$(function() {
 		$('form').submit(function(){
-	    const gotoChat = 'chat?username='
+	    const gotoChat = 'chat?username=';
 	    const username = $('#username').val();
-	    userLogin(username);
+	    const password = $('#password').val();
+
+	    $('#username').val('');
+	    $('#password').val('');
+
+	    const userdata = {
+	    	"username": username,
+	    	"password": password
+	    };
+
+	    $.ajax({
+	    	url: '/checkUserLogin/',
+	    	data: userdata,
+	    	type: 'POST',
+	    	success: function() {
+	    		console.log('great!');
+	    		userLogin(username);
+	    	},
+	    	error: function(xhr, status, error) {
+				  alert(xhr.responseText);
+				}
+	    });
+
 	    return false;
 		});
 
-		function userLogin() 
+		function userLogin(username) 
 		{
-			const chatPage = 'chat';
-			const username = $('#username').val();
-			//const password = $('#password').val();
+			console.log('moving to chat...');
+			window.location = '/chat?username=' + username;
 		}
 	});
 
@@ -29,6 +50,7 @@
 	<form action="">
 		<h1>Login to socket-chat</h1>
 		<label for="username">Username:</label><input type="text" id="username" />
+		<label for="password">Password:</label><input type="password" id="password" />
 		<button type="submit">Submit</button>
 	</form>
 </body>
