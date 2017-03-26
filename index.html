@@ -32,6 +32,13 @@
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <script>
     $(function () {
+      // from https://stackoverflow.com/questions/979975/how-to-get-the-value-from-the-get-parameters?page=1&tab=votes#tab-top
+      function getUrlParams( name ) {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
+      };
+
+      const username = getUrlParams( 'username' );
+
       var socket = io();
 
       $('form').submit(function(){
@@ -41,7 +48,7 @@
         var timestamp = now.getHours() + ':' + now.getMinutes();
 
         messagePack.time = timestamp;
-        messagePack.author = $('#username').val() ? $('#username').val() : 'anon';
+        messagePack.author = username;
         messagePack.message = $('#m').val();
 
         socket.emit('chat message', messagePack);
