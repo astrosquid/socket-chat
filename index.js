@@ -82,6 +82,10 @@ io.on('connection', function (socket)
     // endpoint
     socket.on('chat message', function (msg)
     {
+    		
+    		if (msg.message.charAt(0) == '/') {
+
+    		}
         io.emit('chat message', msg);
     });
 }).on('disconnect', function (socket)
