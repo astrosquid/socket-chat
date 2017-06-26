@@ -6,7 +6,7 @@
 
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
-      form { background: #e6e6e6; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form { background: #e6e6e6; padding: 10px; position: fixed; bottom: 0; width: 100%;}
       form input { border: 0px solid black; padding: 10px; width: 100%; margin-right: .5%; display: inline; border-radius: 10px;}
       
       form button { 
@@ -14,6 +14,12 @@
         background: rgb(130, 224, 255); 
         border: none; 
         padding: 10px; 
+      }
+
+      #messagewindow p {
+        font-size: 10px;
+        margin: 2px;
+        color: #b3b3b3;
       }
       
       .messageList {
@@ -32,10 +38,18 @@
         background: #6699ff;
         color: white;
       }
-
       .messageList li:nth-child(even) {
         background: #d9d9d9;
         color: #4d4d4d;
+      }
+      #timestamp {
+        display: none;
+      }
+      #authors {
+        display: none;
+      }
+      #messages {
+        display: none;
       }
 
     </style>
@@ -45,6 +59,8 @@
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <script>
     $(function () {
+      const userid;
+
       // from https://stackoverflow.com/questions/979975/how-to-get-the-value-from-the-get-parameters?page=1&tab=votes#tab-top
       function getUrlParams( name ) {
         return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
@@ -68,10 +84,7 @@
       function processSlashCommand(command) {
         const uls = ['#timestamp', '#authors', '#messages'];
         if (command == '/clear') {
-          $('#timestamp').empty();
-          $('#authors').empty();
-          $('#messages').empty();
-          console.log('clearing...');
+          $('#messagewindow').empty();
         }
       }
 
@@ -92,7 +105,13 @@
         $('#timestamp').append($('<li>').text(msg.time));
         $('#authors').append($('<li>').text(msg.author));
         $('#messages').append($('<li>').text(msg.message));
+        $('#messagewindow').append($('<p>').text(msg.author));
+        $('#messagewindow').append($('<li>').text(msg.message));
       });
+
+      socket.on('id-assign', function(id) {
+        userid = id;
+      })
 
     });
   </script>
@@ -101,7 +120,8 @@
     <div id="messageLists">
       <ul id="timestamp" class="messageList"></ul>
       <ul id="authors" class="messageList"></ul>
-      <ul id="messages" class="messageList"></ul>  
+      <ul id="messages" class="messageList"></ul>
+      <ul id="messagewindow" class="messageList"></ul>
     </div>
     
     <form action="">

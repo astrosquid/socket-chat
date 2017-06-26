@@ -82,9 +82,9 @@ io.on('connection', function (socket)
     // endpoint
     socket.on('chat message', function (msg)
     {
-    		
     		if (msg.message.charAt(0) == '/') {
-
+    			// execute slash commands
+    			
     		}
         io.emit('chat message', msg);
     });
