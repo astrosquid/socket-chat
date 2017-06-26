@@ -6,29 +6,38 @@
 
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 1px solid black; padding: 10px; width: 90%; margin-right: .5%; display: inline; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      form { background: #e6e6e6; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0px solid black; padding: 10px; width: 100%; margin-right: .5%; display: inline; border-radius: 10px;}
+      
+      form button { 
+        width: 9%; 
+        background: rgb(130, 224, 255); 
+        border: none; 
+        padding: 10px; 
+      }
 
       body {
-        background: #808080;
+        background: #d9d9d9;
       }
       
       .messageList {
-        border-right: 1px solid black;
         list-style-type: none;
         display: inline-block;
       }
       #messages {
-        color: white;
-        background: #808080;
         border: none;
       }
       .messageList li {
-        padding: 5px 10px;
+        padding: 5px 5px 5px 5px;
       }
       .messageList li:nth-child(odd) {
-        background: #999999;
+        background: #6699ff;
+        color: white;
+      }
+
+      .messageList li:nth-child(even) {
+        background: #d9d9d9;
+        color: #4d4d4d;
       }
 
     </style>
@@ -98,7 +107,7 @@
     </div>
     
     <form action="">
-      <input autofocus="autofocus" id="m" placeholder="Aa..." autocomplete="off" /><button>Send</button>
+      <input autofocus="autofocus" id="m" placeholder="Aa..." autocomplete="off" />
     </form>
   </body>
 </html>
