@@ -74,7 +74,7 @@ io.on('connection', function (socket)
 
     messagePack.time = timestamp;
     messagePack.author = 'SYSTEM';
-    messagePack.message = 'A visitor approaches...';
+    messagePack.message = 'A visitor approaches with ID number ' + socket.id;
 
     console.log('someone connected...');
     io.emit('chat message', messagePack);
@@ -84,7 +84,7 @@ io.on('connection', function (socket)
     {
     		if (msg.message.charAt(0) == '/') {
     			// execute slash commands
-    			
+
     		}
         io.emit('chat message', msg);
     });
