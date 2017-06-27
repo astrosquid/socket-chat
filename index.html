@@ -7,7 +7,11 @@
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
       form { background: #e6e6e6; padding: 10px; position: fixed; bottom: 0; width: 100%;}
-      form input { border: 0px solid black; padding: 10px; width: 100%; margin-right: .5%; display: inline; border-radius: 10px;}
+      form input { border: 0px solid black; padding: 10px; margin-right: .5%; display: inline; border-radius: 10px;}
+      form input#m { width: 60%; }
+      form input#usernameinput {
+        width: 38%;
+      }
       
       form button { 
         width: 9%; 
@@ -103,6 +107,9 @@
       }
 
       socket.on('chat message', function(msg){
+        if ( msg.ignoredby == userid ) {
+          return;
+        }
         $('#timestamp').append($('<li>').text(msg.time));
         $('#authors').append($('<li>').text(msg.author));
         $('#messages').append($('<li>').text(msg.message));
@@ -128,6 +135,7 @@
     
     <form action="">
       <input autofocus="autofocus" id="m" placeholder="Aa..." autocomplete="off" />
+      <input id="usernameinput" placeholder="Your name..." />
     </form>
   </body>
 </html>
