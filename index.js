@@ -11,6 +11,8 @@ const io = require('socket.io')(http);
 const qs = require('querystring');
 var bodyParser = require('body-parser');
 
+var clients = [];
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: true
@@ -67,30 +69,33 @@ app.get('/chat', function (req, res)
 
 io.on('connection', function (socket)
 {
+		const userid = socket.id;
     const messagePack = {};
-
     const now = new Date();
-    const timestamp = now.getHours() + ':' + now.getMinutes();
+    // I'm removing the timestamp here for two reasons.
+    // One is that none of the implementations I can find are simple enough to warrant caring anymore.
+    // Second, we don't care how the server perceives time. We'll just grab the milliseconds later to keep in the db. Convert on the fly as needed, etc.
+    //const timestamp = ('0' + now.getHours().slice(-2) + ':' + '0' + now.getMinutes().slice(-2) );
 
-    messagePack.time = timestamp;
-    messagePack.author = 'SYSTEM';
-    messagePack.message = 'A visitor approaches with ID number ' + socket.id;
-
-    console.log('someone connected...');
+    //messagePack.time = timestamp;
+    messagePack.author = 'System';
+    messagePack.message = 'A visitor approaches with ID ' + socket.id;
+    clients.push(socket);
     io.emit('chat message', messagePack);
 
     // endpoint
     socket.on('chat message', function (msg)
     {
-    		if (msg.message.charAt(0) == '/') {
-    			// execute slash commands
-
-    		}
         io.emit('chat message', msg);
     });
-}).on('disconnect', function (socket)
-{
-    console.log('user left.');
+
+    socket.on('disconnect', function() {
+    	console.info(socket.id + ' walked away.');
+    	//messagePack.time = timestamp;
+	    messagePack.author = 'System';
+	    messagePack.message = 'A visitor with ID ' + socket.id + ' walks away.';
+	    io.emit('chat message', messagePack);
+    });
 });
 
 http.listen(PORT, function ()
