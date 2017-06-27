@@ -19,6 +19,7 @@
       #messagewindow p {
         font-size: 10px;
         margin: 2px;
+        margin-left: 10px;
         color: #b3b3b3;
       }
       
@@ -59,7 +60,7 @@
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <script>
     $(function () {
-      const userid = 0;
+      let userid = '';
 
       // from https://stackoverflow.com/questions/979975/how-to-get-the-value-from-the-get-parameters?page=1&tab=votes#tab-top
       function getUrlParams( name ) {
@@ -109,8 +110,9 @@
         $('#messagewindow').append($('<li>').text(msg.message));
       });
 
-      socket.on('id-assign', function(id) {
-        userid = id;
+      socket.on('hi there', function(msg) {
+        userid = msg.message;
+        console.log('My ID is ' + userid);
       })
 
     });

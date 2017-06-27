@@ -8,7 +8,7 @@ console.log('port is: ' + PORT);
 const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-const qs = require('querystring');
+//const qs = require('querystring');
 var bodyParser = require('body-parser');
 
 var clients = [];
@@ -53,7 +53,6 @@ app.post('/checkUserLogin', function (req, res) {
 	}
 
 	res.status(400).send('You done goofed.');
-	
 });
 
 app.get('/login', function (req, res)
@@ -79,6 +78,9 @@ io.on('connection', function (socket)
 
   //messagePack.time = timestamp;
   messagePack.author = 'System';
+  messagePack.message = socket.id;
+  socket.emit('hi there', messagePack);
+
   messagePack.message = 'A visitor approaches with ID ' + socket.id;
   clients.push(socket);
   io.emit('chat message', messagePack);
