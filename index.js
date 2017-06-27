@@ -81,7 +81,11 @@ io.on('connection', function (socket)
   messagePack.message = socket.id;
   socket.emit('hi there', messagePack);
 
+  messagePack.message = 'Hello fair traveller, ' + socket.id + '.';
+  socket.emit('chat message', messagePack);
+
   messagePack.message = 'A visitor approaches with ID ' + socket.id;
+  messagePack.ignoredby = socket.id;
   clients.push(socket);
   io.emit('chat message', messagePack);
 
