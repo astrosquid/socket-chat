@@ -21,9 +21,9 @@
       }
 
       #messagewindow p {
-        font-size: 10px;
+        font-size: 12px;
         margin: 2px;
-        margin-left: 10px;
+        margin-left: 4%;
         color: #b3b3b3;
       }
       
@@ -38,6 +38,7 @@
         padding: 7px;
         border-radius: 10px;
         margin-top: 2px;
+        margin-left: 2%;
       }
       .messageList li:nth-child(odd) {
         background: #6699ff;
@@ -71,7 +72,7 @@
         return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
       };
 
-      const username = getUrlParams( 'username' );
+      const username = $('#usernameinput').val();
 
       var socket = io();
 
@@ -100,8 +101,11 @@
         var timestamp = now.getHours() + ':' + now.getMinutes();
 
         messagePack.time = timestamp;
-        messagePack.author = username;
+        messagePack.author = $('#usernameinput').val();
         messagePack.message = $('#m').val();
+        messagePack.uid = userid;
+
+        console.log('my username is: ' + username);
 
         socket.emit('chat message', messagePack);
       }
@@ -135,7 +139,8 @@
     
     <form action="">
       <input autofocus="autofocus" id="m" placeholder="Aa..." autocomplete="off" />
-      <input id="usernameinput" placeholder="Your name..." />
+      <input id="usernameinput" autocomplete="off" placeholder="Your name..." />
+      <input type="submit" style="display: none" />
     </form>
   </body>
 </html>
