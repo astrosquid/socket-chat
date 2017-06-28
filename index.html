@@ -83,7 +83,7 @@
 
       const username = $('#usernameinput').val();
 
-      var socket = io();
+      let socket = io();
       const usercolors = {};
       const maxhue = 330;
       const saturation = '100%';
@@ -92,7 +92,7 @@
       function assignColorToUser( uid ) {
         const hue = Math.round(Math.random() * maxhue);
         const values = "hsl(" + hue + "," + saturation + "," + lightness + ")";
-        usercolors.uid = values;
+        usercolors[uid] = values;
       }
 
       $('form').submit(function(){
@@ -140,12 +140,16 @@
           return;
         }
 
+        console.table(usercolors);
+
         const chatmessage = $('<li>');
         if ( !usercolors.hasOwnProperty(msg.uid) ) {
           assignColorToUser(msg.uid);
         }
 
-        chatmessage.css('background', usercolors.uid);
+        console.table(usercolors);
+
+        chatmessage.css('background', usercolors[msg.uid]);
         chatmessage.append(msg.message);
         
         $('#messagewindow').append($('<p>').text(msg.author));
