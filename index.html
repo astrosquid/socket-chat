@@ -20,34 +20,42 @@
         padding: 10px; 
       }
 
+      #messageLists {
+        width: auto;
+      }
+
+      #messagewindow {
+        width: auto;
+      }
+
       #messagewindow p {
         font-size: 12px;
         margin: 2px;
-        margin-left: 4%;
+        margin-left: 3em;
         color: #b3b3b3;
       }
       
       .messageList {
         list-style-type: none;
-        display: inline-block;
-      }
-      #messages {
-        border: none;
+        width: auto;
+        overflow:auto;
       }
       .messageList li {
         padding: 7px;
         border-radius: 10px;
         margin-top: 2px;
-        margin-left: 2%;
-      }
-      .messageList li:nth-child(odd) {
+        margin-left: 2em;
         background: #6699ff;
         color: white;
+        max-width: 80%;
       }
-      .messageList li:nth-child(even) {
+      
+      li.own-message {
         background: #d9d9d9;
         color: #4d4d4d;
+        text-align: right;
       }
+
       #timestamp {
         display: none;
       }
@@ -56,6 +64,7 @@
       }
       #messages {
         display: none;
+        border: none;
       }
 
     </style>
@@ -75,6 +84,16 @@
       const username = $('#usernameinput').val();
 
       var socket = io();
+      const usercolors = {};
+      const maxhue = 330;
+      const saturation = '100%';
+      const lightness = '40%';
+
+      function assignColorToUser( uid ) {
+        const hue = Math.round(Math.random() * maxhue);
+        const values = "hsl(" + hue + "," + saturation + "," + lightness + ")";
+        usercolors.uid = values;
+      }
 
       $('form').submit(function(){
         if ($('#m').val().charAt(0) == '/') {
@@ -105,8 +124,6 @@
         messagePack.message = $('#m').val();
         messagePack.uid = userid;
 
-        console.log('my username is: ' + username);
-
         socket.emit('chat message', messagePack);
       }
 
@@ -114,11 +131,25 @@
         if ( msg.ignoredby == userid ) {
           return;
         }
-        $('#timestamp').append($('<li>').text(msg.time));
-        $('#authors').append($('<li>').text(msg.author));
-        $('#messages').append($('<li>').text(msg.message));
+
+        if (msg.uid == userid) {
+          const ownchat = $('<li>');
+          ownchat.append(msg.message);
+          ownchat.addClass("own-message");
+          $('#messagewindow').append(ownchat);
+          return;
+        }
+
+        const chatmessage = $('<li>');
+        if ( !usercolors.hasOwnProperty(msg.uid) ) {
+          assignColorToUser(msg.uid);
+        }
+
+        chatmessage.css('background', usercolors.uid);
+        chatmessage.append(msg.message);
+        
         $('#messagewindow').append($('<p>').text(msg.author));
-        $('#messagewindow').append($('<li>').text(msg.message));
+        $('#messagewindow').append(chatmessage);
       });
 
       socket.on('hi there', function(msg) {
