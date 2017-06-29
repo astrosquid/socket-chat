@@ -140,14 +140,19 @@
           return;
         }
 
-        console.table(usercolors);
-
-        const chatmessage = $('<li>');
-        if ( !usercolors.hasOwnProperty(msg.uid) ) {
-          assignColorToUser(msg.uid);
+        if (!msg.hasOwnProperty("uid") && msg.author == 'System') {
+          const systemMessage = $('<p>').text(msg.message);
+          systemMessage.css('margin-left', '0');
+          systemMessage.css('text-align', 'center');
+          systemMessage.css('vertical-align', 'center');
+          $('#messagewindow').append(systemMessage);
+          return;
         }
 
-        console.table(usercolors);
+        const chatmessage = $('<li>');
+        if (!usercolors.hasOwnProperty(msg.uid)) {
+          assignColorToUser(msg.uid);
+        }
 
         chatmessage.css('background', usercolors[msg.uid]);
         chatmessage.append(msg.message);
