@@ -156,14 +156,18 @@
 
         chatmessage.css('background', usercolors[msg.uid]);
         chatmessage.append(msg.message);
+
+        const lastauthor = $('p:last-of-type').text();
         
-        $('#messagewindow').append($('<p>').text(msg.author));
+        if (lastauthor != msg.author) {
+          $('#messagewindow').append($('<p>').text(msg.author));  
+        }
+        
         $('#messagewindow').append(chatmessage);
       });
 
       socket.on('hi there', function(msg) {
         userid = msg.message;
-        console.log('My ID is ' + userid);
       })
 
     });
