@@ -86,11 +86,12 @@
       let socket = io();
       const usercolors = {};
       const maxhue = 330;
+      const huerange = [185, 240];
       const saturation = '100%';
       const lightness = '40%';
 
       function assignColorToUser( uid ) {
-        const hue = Math.round(Math.random() * maxhue);
+        const hue = Math.round(Math.random() * (huerange[1] - huerange[0]) + huerange[0]);
         const values = "hsl(" + hue + "," + saturation + "," + lightness + ")";
         usercolors[uid] = values;
       }
